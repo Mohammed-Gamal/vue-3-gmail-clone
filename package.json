@@ -7,7 +7,12 @@
     "build": "vue-cli-service build"
   },
   "dependencies": {
+    "axios": "^0.27.2",
     "core-js": "^3.8.3",
+    "date-fns": "^2.29.3",
+    "marked": "^4.1.0",
+    "sass": "^1.54.9",
+    "sass-loader": "^13.0.2",
     "vue": "^3.2.13",
     "vue-router": "^4.0.3"
   },
