@@ -35,28 +35,17 @@
 <script>
   import { format } from 'date-fns'
   import API from '@/services/API'
-  import { ref, reactive } from 'vue'
+  import { ref } from 'vue'
   import MailView from '@/components/MailView.vue'
   import ModalView from '@/components/ModalView.vue'
+  import useEmailSelection from '@/composables/use-email-selection'
 
   export default {
     async setup() {
       const { data: emails } = await API.getEmails()
 
-      let selected = reactive(new Set())
-      let emailSelection = {
-        emails: selected,
-        toggle(email) {
-          if (selected.has(email)) {
-            selected.delete(email)
-          } else {
-            selected.add(email)
-          }
-        }
-      }
-
       return {
-        emailSelection,
+        emailSelection: useEmailSelection(),
         format,
         emails: ref(emails),
         openedEmail: ref(null)
