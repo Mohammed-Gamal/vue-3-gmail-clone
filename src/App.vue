@@ -1,9 +1,28 @@
 <template>
-  <nav>
-    <router-link to="/">VMail Inbox</router-link>
-  </nav>
-  <router-view />
+  <h1>VMail Inbox</h1>
+  <Suspense>
+    <!-- component with async dependency -->
+    <template #default>
+      <MailTable />
+    </template>
+
+    <!-- loading state via #fallback slot -->
+    <template #fallback>
+      Loading...
+    </template>
+  </Suspense>
 </template>
+
+<script>
+  import MailTable from '@/components/MailTable.vue'
+
+  export default {
+    name: 'Inbox',
+    components: {
+      MailTable
+    }
+  }
+</script>
 
 <style lang="scss">
 #app {
@@ -17,16 +36,23 @@
 
 /* Global Styles */
 
-nav {
-  padding: 30px;
+.nav-btn
+{
+  display: inline-block;
+  padding: 10px;
+  margin: 10px;
+  text-decoration: none;
+  border-radius: 4px;
+  font-weight: bold;
+  border: 1px solid #ddd;
+  color: #2c3e50c8;
+  background-color: #eee;
+  transition: 0.3s;
 
-  a {
-    font-weight: bold;
+  &.active,
+  &:hover {
     color: #2c3e50;
-
-    &.router-link-exact-active {
-      color: #42b983;
-    }
+    transform: scale(1.05)
   }
 }
 
@@ -42,7 +68,8 @@ button {
 }
 
 button:disabled {
-  cursor: auto;
+  cursor: not-allowed;
+  opacity: 0.6;
 }
 
 button.selected {

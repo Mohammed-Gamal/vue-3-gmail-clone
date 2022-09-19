@@ -1,11 +1,27 @@
 <template>
-  <div>
-    <input
-      type="checkbox"
-      :checked="allEmailsSelected"
-      :class="{ 'partial-check': someEmailsSelected }"
-      @click="bulkSelect"
-    />
+  <div class="bulk-action-bar">
+    <span class="checkbox">
+      <input
+        type="checkbox"
+        :checked="allEmailsSelected"
+        :class="{ 'partial-check': someEmailsSelected }"
+        @click="bulkSelect"
+      />
+    </span>
+    <span class="buttons">
+      <button
+        @click="emailSelection.markRead()"
+        :disabled="[...emailSelection.emails].every(e => e.read)"
+      >Mark Read</button>
+      <button
+        @click="emailSelection.markUnread()"
+        :disabled="[...emailSelection.emails].every(e => !e.read)"
+      >Mark Unread</button>
+      <button
+        @click="emailSelection.archive()"
+        :disabled="numberSelected === 0"
+      >Archive</button>
+    </span>
   </div>
 </template>
 
@@ -17,11 +33,11 @@
     setup(props) {
       let emailSelection = useEmailSelection()
       let numberSelected = computed(() => emailSelection.emails.size)
-      let numberEmails = props.emails.length
+      let numberEmails = computed(() => props.emails.length)
 
-      let allEmailsSelected = computed(() => numberSelected.value === numberEmails)
+      let allEmailsSelected = computed(() => numberSelected.value === numberEmails.value)
       let someEmailsSelected = computed(() => {
-        return numberSelected.value > 0 && numberSelected.value < numberEmails
+        return numberSelected.value > 0 && numberSelected.value < numberEmails.value
       })
 
       let bulkSelect = () => {
@@ -35,7 +51,9 @@
       return {
         allEmailsSelected,
         someEmailsSelected,
-        bulkSelect
+        bulkSelect,
+        emailSelection,
+        numberSelected
       }
     },
     props: {
