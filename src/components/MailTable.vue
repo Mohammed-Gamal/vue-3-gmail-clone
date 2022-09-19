@@ -1,5 +1,6 @@
 <template>
   <h1>{{ emailSelection.emails.size }} emails selected</h1>
+  <BulkActionBar :emails="unarchivedEmails" />
   <table class="mail-table">
     <tbody>
       <tr
@@ -11,7 +12,7 @@
           <input
             type="checkbox"
             @click="emailSelection.toggle(email)"
-            :selected="emailSelection.emails.has(email)"
+            :checked="emailSelection.emails.has(email)"
           />
         </td>
         <td @click="openEmail(email)">{{ email.from }}</td>
@@ -38,6 +39,7 @@
   import { ref } from 'vue'
   import MailView from '@/components/MailView.vue'
   import ModalView from '@/components/ModalView.vue'
+  import BulkActionBar from '@/components/BulkActionBar.vue'
   import useEmailSelection from '@/composables/use-email-selection'
 
   export default {
@@ -53,7 +55,8 @@
     },
     components: {
       MailView,
-      ModalView
+      ModalView,
+      BulkActionBar
     },
     computed: {
       sortEmails() {
